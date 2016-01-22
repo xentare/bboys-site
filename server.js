@@ -5,7 +5,6 @@ var request = require('request');
 var bodyParser = require('body-parser')
 
 app.set('port', (process.env.PORT || 80));
-// COMMENT
 app.set('view engine', 'ejs');
 app.set('views',__dirname + '/public/views');
 
