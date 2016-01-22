@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>DevBlog API</title>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/api-style.css"/>
+</head>
+
+<body>
+<h1>Development blog API</h1>
+
+<p>Parameter lists just as urlencoded, responses in JSON format.</p>
+
+<h2>GET /api/post/all</h2>
+<p class="params">none</p>
+<p>Gets all posts from the database.</p>
+<p class="response">All not-hidden posts with all values</p>
+
+<h2>GET /api/post/:id</h2>
+<p class="params">none</p>
+<p>Gets one post with specified id from the database.</p>
+<p class="response">The post with the given id or an 404 error 'Post not found.'</p>
+
+<h2>POST /api/post</h2>
+<p class="params">apiKey, idUser, title, content</p>
+<p>Adds the post in to the database.</p>
+<p class="response">Returns the inserted post or an 400 error 'Post insertion failed'.</p>
+
+<h2>PUT /api/post</h2>
+<p class="params">apiKey, idUser, title, content</p>
+<p>Updates the post in to the database.</p>
+<p class="response">The updated post or an 400 error 'Update failed'.</p>
+
+
+<h2>DELETE /api/post:id</h2>
+<p class="params">apiKey</p>
+<p>Sets the 'hidden'-flag true for the post with the given id. Does not actually delete the post.</p>
+<p class="response">An 200 message 'Deleted succesfully' or 400 error 'Deletion failed'</p>
+
+
+<h2>POST /api/login</h2>
+<p class="params">username, password(plaintext)</p>
+<p>Checks if username and password matches some ones from the database.</p>
+<p class="response">An apiKey if login succesfull, an 400 error if password and username are not valid.</p>
+
+<h2>POST /api/logout</h2>
+<p class="params">apiKey</p>
+<p>Logs out the user just by creating new apiKey for the user.</p>
+<p class="response">400 message 'Logout succesfull'</p> 
+
+</body>
+
+</html>
