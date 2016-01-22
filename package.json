@@ -1,0 +1,30 @@
+{
+  "name": "glowing-dollop",
+  "version": "0.0.0",
+  "description": "Sample glowing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^0.8.5",
+    "body-parser": "^1.14.2",
+    "crypto": "0.0.3",
+    "ejs": "^2.3.4",
+    "express": "4.13.3",
+    "mongoose": "^4.3.6",
+    "request": "^2.67.0"
+  },
+  "engines": {
+    "node": "0.12.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tarvainen/glowing-dollop"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ]
+}
