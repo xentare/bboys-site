@@ -6,13 +6,47 @@
 <title>DevBlog Edit</title>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" type="text/css" href="css/api-style.css"/>
+<link rel="stylesheet" type="text/css" href="css/index.css"/>
+<link rel="stylesheet" type="text/css" href="css/editor-style.css"/>
+
 </head>
 
-<body>
+<body ng-controller="mainController"  ng-app="devblogeditor">
+	<center>
+		<div id="navBar">
+			<ul>
+				<li><a href="#newpost">New</a></li>
+				<li><a href="#allposts">All posts</a></li>
+				<li><a href="#services">Log out</a></li>
+			</ul>
+		</div>
+	</center>
 
-<a href="/logout">Log out</a>
+	<form id="formEdit" class="page" data-name="newpost">
+	<input type="text" id="inputTitle" name="title" placeholder="Title" required/>
+	<textarea name="content"></textarea>
+	<input type="submit" name="bntSubmit" value="Save" />
+	</form>
+
+	<div class="page" data-name="allposts">
+	<div class="postWrapper" ng-repeat="post in posts" data-name="allposts">
+	<div class="info">
+		<span><b>{{ post.title }}</b></span>
+		<img src="../img/ic_access_time_black_24px.svg"/>
+		<span>{{ post.date | date }}</span>
+	</div>
+	<div class="buttons">
+		<img src="../img/ic_access_time_black_24px.svg"/>
+	</div>
+	</div>
+	</div>
 
 </body>
+
+<script src="js/angular/angular.min.js"></script>
+<script src="js/angular/main-editor.js"></script>
+<script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="js/editor.js"></script>
 
 </html>

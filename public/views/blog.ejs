@@ -53,8 +53,7 @@
 			</div>
 
 			<div class="smallDivider"></div>
-			<div class="postContent">
-			{{ post.content }}
+			<div class="postContent" ng-bind-html="post.content">
 			</div>
 		</div>
 
@@ -62,7 +61,7 @@
 
 	<div id="footer"></div>
 </div>
-</body>
-<script src="js/angular/angular.min.js"></script>
+</body>	
+</script><script src="js/angular/angular.min.js"></script>
 <script src="js/main.js"></script>
 </html>
