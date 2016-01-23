@@ -8,9 +8,10 @@ module.exports = function (app) {
 		var params = req.body;
 
 		if (!params.username || !params.password) {
-			res.send({
-				msg: 'All required fields was not received.'
-			}, 400);
+			res.status(400).send({
+				msg: 'All required fields were not received.',
+				success: false
+			});
 			next();
 		}
 
@@ -19,32 +20,33 @@ module.exports = function (app) {
 		}, function (error, user) {
 
 			if (error) {
-				res.send({
+				res.status(400).send({
 					err: error,
-					msg: 'Can\'t login'
-				}, 400);
+					msg: 'Username or password incorrent.',
+					success: false
+				});
 
 				next();
 			} else {
-
-				if (!user) {
-					res.send({
-						msg: 'Login failed'
-					}, 200);
-					next();
-				} else {
+				
+				if (user && user.password) {
 					var match = bcrypt.compareSync(params.password, user.password);
 
 					if (match) {
 						res.cookie('user', user, { maxAge: 900000 });
-						res.send({
-							msg: 'Login succesfull'
-						}, 200);
+						res.status(200).send({
+							data: user,
+							msg: 'Login succesfull',
+							success: true
+						});
+
 						next();
 					} else {
-						res.send({
-							msg: 'Login failed'
-						}, 400);
+						res.status(400).send({
+							msg: 'Login failed',
+							success: false
+						});
+
 						next();
 					}
 				}

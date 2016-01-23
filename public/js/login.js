@@ -6,7 +6,7 @@ $('form').submit(function () {
 		dataType: 'json',
 		data: $(this).serialize(),
 		success: function (data) {
-			if (data && data.msg == 'Login succesfull') {
+			if (data && data.success) {
 				window.location.replace('/edit');
 			}
 		}
