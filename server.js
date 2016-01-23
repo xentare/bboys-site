@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var request = require('request');
 var bodyParser = require('body-parser')
 
-app.set('port', (process.env.PORT || 80));
+app.set('port', (process.env.PORT || 8080));
 app.set('view engine', 'ejs');
 app.set('views',__dirname + '/public/views');
 
@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
 });
 
 // just shitty remote connection, fix later
-mongoose.connect('mongodb://bboy:qwe123asd@46.101.231.65:27017/bboysBlog'); 
+mongoose.connect('mongodb://localhost/bboysBlog');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
