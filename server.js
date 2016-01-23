@@ -29,7 +29,7 @@ mongoose.connect('mongodb://localhost/bboysBlog');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('public'));
-
+ 
 app.get('/', function (req, res, next) {
 	res.render('index.ejs');
 	next();
