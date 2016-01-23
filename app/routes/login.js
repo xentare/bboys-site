@@ -27,19 +27,26 @@ module.exports = function (app) {
 				next();
 			} else {
 
-				var match = bcrypt.compareSync(params.password, user.password);
-
-				if (match) {
+				if (!user) {
 					res.send({
-						data: user,
-						msg: 'Login succesfull'
+						msg: 'Login failed'
 					}, 200);
 					next();
 				} else {
-					res.send({
-						msg: 'Login failed'
-					}, 400);
-					next();
+					var match = bcrypt.compareSync(params.password, user.password);
+
+					if (match) {
+						res.cookie('user', user, { maxAge: 900000 });
+						res.send({
+							msg: 'Login succesfull'
+						}, 200);
+						next();
+					} else {
+						res.send({
+							msg: 'Login failed'
+						}, 400);
+						next();
+					}
 				}
 			}
 

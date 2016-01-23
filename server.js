@@ -2,11 +2,15 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var request = require('request');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var checkLogin = require('./app/helpers/checkLogin');
 
 app.set('port', (process.env.PORT || 8080));
 app.set('view engine', 'ejs');
 app.set('views',__dirname + '/public/views');
+
+app.use(cookieParser());
 
 app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,8 +21,10 @@ app.use(function (req, res, next) {
 	next();
 });
 
-// just shitty remote connection, fix later
 mongoose.connect('mongodb://localhost/bboysBlog');
+
+// remote connection for developing
+//mongoose.connect('mongodb://bboy:qwe123asd@46.101.231.65/bboysBlog');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -32,6 +38,16 @@ app.get('/', function (req, res, next) {
 app.get('/login', function (req, res, next) {
 	res.render('login.ejs');
 	next();
+});
+
+app.get('/logout', function (req, res, next) {
+	res.cookie('user', undefined);
+	res.redirect('/login');
+	next();
+});
+
+app.get('/edit', checkLogin, function (req, res, next) {
+	res.render('edit.ejs');
 });
 
 app.get('/blog', function (req, res, next) {

@@ -6,8 +6,8 @@ $('form').submit(function () {
 		dataType: 'json',
 		data: $(this).serialize(),
 		success: function (data) {
-			if (data.err) {
-				$('#passwordField').val('').focus();
+			if (data && data.msg == 'Login succesfull') {
+				window.location.replace('/edit');
 			}
 		}
 	});
