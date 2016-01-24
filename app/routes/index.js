@@ -7,4 +7,5 @@ module.exports = function (app) {
 	require('./post')(app);
 	require('./user')(app);
 	require('./invite')(app);
+	require('./register')(app);
 }

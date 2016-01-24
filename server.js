@@ -6,6 +6,8 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var checkLogin = require('./app/helpers/checkLogin');
 
+var Invitation = require('./app/models/invitation');
+
 app.set('port', (process.env.PORT || 80));
 app.set('view engine', 'ejs');
 app.set('views',__dirname + '/public/views');
@@ -40,14 +42,36 @@ app.get('/login', function (req, res, next) {
 	next();
 });
 
+app.get('/register', function (req, res, next) {
+	var params = req.query;
+	Invitation.findOne({
+		key: params.invitationKey
+	}, function (err, invitation) {
+		if (err) {
+			res.render('invitation404.ejs');
+			next();
+		} else {
+			if (!invitation) {
+				res.render('invitation404.ejs');
+				next();
+			} else {
+				res.render('register.ejs');
+				next();
+			}
+		}
+	});
+
+});
+
 app.get('/logout', function (req, res, next) {
 	res.cookie('user', undefined);
 	res.redirect('/login');
 	next();
-});
+}); 
 
 app.get('/edit', checkLogin, function (req, res, next) {
 	res.render('edit.ejs');
+	next();
 });
 
 app.get('/blog', function (req, res, next) {

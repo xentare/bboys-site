@@ -2,45 +2,62 @@
  * Created by Juha on 23/01/16.
  */
 
-var User = require('../models/user.js');
+var User = require('../models/user');
 var bcrypt = require('bcrypt');
+var hashes = require('../helpers/hashes');
 
 module.exports = function (app) {
 
-    app.post('/api/register', function (req, res, next) {
-       var params = req.body;
+	app.post('/api/register', function (req, res, next) {
+		var params = req.body;
 
-        if(!params.username || !params.password) {
-            res.status(400).send({
-                msg: 'All required parameters were not received.',
-            });
+		if (!params.username || !params.password) {
+			res.status(400).send({
+				msg: 'All required parameters were not received.',
+			});
 
-            next();
-        }
+			next();
+		} else {
+			User.find({
+				username: params.username
+			}, function (err, user) {
+				if (user.username) {
+					res.send({
+						msg: 'Username already in use',
+						data: user,
+						success: false
+					}, 200);
+					next();
+				} else {
+					var md5 = hashes.random('md5'); 
 
-        bcrypt.genSalt(10, function (err, salt) {
-            bcrypt.hash(params.password, salt, function (err, hash) {
-                var user = new User({
-                    username: params.username,
-                    password: hash
-                });
+					console.log(params.password);  
+					var hash = bcrypt.hashSync(params.password, 10);
 
-                User.save(user, function (err) {
-                   if(err){
-                       res.status(400).send({
-                           success: false,
-                           err: err
-                       });
-                   } else {
-                       res.status(200).send({
-                          success: true
-                       });
-                   }
-                });
+					User.create({
+						username: params.username,
+						password: hash,
+						apiKey: md5
+					}, function (err, user) {
+						console.log(user);
+						if (err) {
+							res.status(400).send({
+								success: false,
+								err: err
+							});
+							next();
+						} else {
+							res.status(200).send({
+								success: true
+							});
+							next();
+						}
+					});
+				}
 
-            })
-        });
+			});
+		}
 
-    });
+	});
 
 };

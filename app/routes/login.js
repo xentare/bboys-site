@@ -22,7 +22,7 @@ module.exports = function (app) {
 			if (error) {
 				res.status(400).send({
 					err: error,
-					msg: 'Username or password incorrent.',
+					msg: 'Username or password incorrect.',
 					success: false
 				});
 
