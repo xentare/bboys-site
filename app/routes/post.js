@@ -8,13 +8,13 @@ module.exports = function (app) {
 			hidden: 'false'
 		}, function (err, data) {
 			if (err) {
-				res.send({
+				res.status(400).send({
 					err: err
-				}, 400);
+				});
 			} else {
-				res.send({
+				res.status(200).send({
 					data: data
-				}, 200);
+				});
 			}
 
 			next();

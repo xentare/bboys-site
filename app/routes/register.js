@@ -22,11 +22,11 @@ module.exports = function (app) {
 				username: params.username
 			}, function (err, user) {
 				if (user.username) {
-					res.send({
+					res.status(400).send({
 						msg: 'Username already in use',
 						data: user,
 						success: false
-					}, 200);
+					});
 					next();
 				} else {
 					var md5 = hashes.random('md5'); 
