@@ -12,5 +12,9 @@ module.exports = mongoose.model('Post',{
 	content: {
 		type: String,
 		default: ''
+	},
+	hidden: {
+		type: Boolean,
+		default: false
 	}
 })
