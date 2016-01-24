@@ -6,6 +6,7 @@
 <title>DevBlog Edit</title>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="css/index.css"/>
 <link rel="stylesheet" type="text/css" href="css/editor-style.css"/>
 
@@ -14,6 +15,7 @@
 <body ng-controller="mainController" id="mainController" ng-app="devblogeditor">
 	<center>
 		<div id="navBar">
+		<h1>logged in as <bold>{{ user.username }}</bold></h1>
 			<ul>
 				<li><a href="#newpost" ng-click="setCurrentPost(undefined)">New</a></li>
 				<li><a href="#allposts">All posts</a></li>

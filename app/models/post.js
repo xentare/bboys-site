@@ -16,5 +16,9 @@ module.exports = mongoose.model('Post',{
 	hidden: {
 		type: Boolean,
 		default: false
+	},
+	idUser: {
+		type: String,
+		default: ''
 	}
 })

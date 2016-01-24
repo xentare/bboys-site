@@ -4,23 +4,35 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 
 	$scope.currentPost = {};
 	$scope.settingsBeingUpdated = false;
+	$scope.user = {};
 
 	$scope.setCurrentPost = function (post) {
 		$scope.currentPost = post;
 	}
 
 	$scope.updatePosts = function () {
-		console.log('gets');
 		$http.get('/api/post/all').success(function (data) {
 			console.log(data);
 			$scope.posts = data.data;
 		});
 	}
 
+	$scope.updateUser = function () {
+		$http.get('/api/user/current').success(function (data) {
+			$scope.user = data.data;
+			console.log(data);
+		});
+	}
+
 	$scope.submitForm = function () {
-		console.log($scope.currentPost);
+		var isnew = true;
+
+		if ($scope.currentPost._id) {
+			isnew = false;
+		}
+
 		$http({
-			method: 'POST', 
+			method: isnew ? 'POST' : 'PUT', 
 			url: '/api/post',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			transformRequest: $scope.transformRequest,
@@ -51,8 +63,6 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 		});
 	}
 
-	$scope.updatePosts();
-
 	$scope.transformRequest = function (data) {
 		var str = [];
 		for (var p in data) {
@@ -60,5 +70,8 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 		}
 		return str.join('&');
 	}
+
+	$scope.updatePosts();
+	$scope.updateUser();
 
 }]);

@@ -1,4 +1,5 @@
 var Post = require('../models/post');
+var checkToken = require('../helpers/checkToken');
 
 module.exports = function (app) {
 
@@ -20,11 +21,12 @@ module.exports = function (app) {
 		});
 	});
 
-	app.post('/api/post', function (req, res, next) {
+	app.post('/api/post', checkToken, function (req, res, next) {
 		var params = req.body;
 		var post = new Post({
 			title: params.title,
-			content: params.content
+			content: params.content,
+			idUser: req.cookies.user._id
 		});
 		post.save(function (err) {
 			if (err) {
@@ -44,7 +46,55 @@ module.exports = function (app) {
 		});
 	});
 
-	app.delete('/api/post', function (req, res, next) {
+	app.put('/api/post', checkToken, function (req, res, next) {
+		var params = req.body;
+
+		if (typeof params._id == 'undefined') {
+			res.send({
+				err: 'Post id not found',
+				msg: 'Post id not found',
+				success: false
+			}, 400);
+			next();
+		}
+
+		Post.findOne({
+			_id: params._id
+		}, function (err, post) {
+			if (err) {
+				res.send({
+					err: err,
+					msg: 'Can\'t find post to update',
+					success: false
+				}, 400);
+				next();
+			}
+
+			if (post) {
+				post.update({
+					title: params.title || 'Untitled',
+					content: params.content || 'Empty content'
+				}, function (err) {
+					if (err) {
+						res.send({
+							err: err,
+							msg: 'Can\'t update',
+							success: false
+						}, 200);
+						next();
+					}
+
+					res.send({
+						msg: 'Updated succesfully',
+						success: true
+					}, 200);
+					next();
+				})
+			}
+		});
+	});
+
+	app.delete('/api/post', checkToken, function (req, res, next) {
 		var params = req.body;
 		console.log(params);
 		Post.findOne({
