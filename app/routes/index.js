@@ -6,4 +6,5 @@ module.exports = function (app) {
 	require('./login')(app);
 	require('./post')(app);
 	require('./user')(app);
+	require('./invite')(app);
 }

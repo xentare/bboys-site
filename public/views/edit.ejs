@@ -20,6 +20,7 @@
 				<li><a href="#newpost" ng-click="setCurrentPost(undefined)">New</a></li>
 				<li><a href="#allposts">All posts</a></li>
 				<li><a href="#settings">Settings</a></li>
+				<li><a href="#invite">Invite</a></li>
 				<li><a href="/logout">Log out</a></li>
 			</ul>
 		</div>
@@ -60,6 +61,16 @@
 		<input type="button" value="Save" ng-show="settingsBeingUpdated" />
 		<input type="button" value="Cancel" ng-click="settingsBeingUpdated = false; tempSettings = undefined" ng-show="settingsBeingUpdated" />
 		</form>
+	</div>
+
+	<div class="page" data-name="invite">
+
+	<h1>Invite a friend</h1>
+	<p>You may invite your friend or maybe an enemy to use this blog with you. Just press the button below to generate a link. Then send it to your partner and you will be ready to write together!</p>
+	<form>
+	<input type="button" class="small" ng-click="generateInvitation()" id="btnCreateInvitationKey" value="Create key" ng-show="invitationKey.key == undefined" />
+	<input type="text" id="inputInviteKey" ng-show="invitationKey.key != undefined" placeholder="Key will be here" value="http://b-boys.xyz/register?invitationKey={{ invitationKey.key }}">
+	</form>
 	</div>
 
 

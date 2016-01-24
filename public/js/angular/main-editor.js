@@ -63,6 +63,15 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 		});
 	}
 
+	$scope.generateInvitation = function () {
+		$http.get('/api/invite').success(function (data) {
+			$scope.invitationKey = data.data;
+			setTimeout(function () {
+			$('#inputInviteKey').select();
+			}, 100);
+		});
+	}
+
 	$scope.transformRequest = function (data) {
 		var str = [];
 		for (var p in data) {
