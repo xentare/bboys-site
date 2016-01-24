@@ -15,38 +15,60 @@
 	<center>
 		<div id="navBar">
 			<ul>
-				<li><a href="#newpost">New</a></li>
+				<li><a href="#newpost" ng-click="setCurrentPost(undefined)">New</a></li>
 				<li><a href="#allposts">All posts</a></li>
-				<li><a href="#services">Log out</a></li>
+				<li><a href="#settings">Settings</a></li>
+				<li><a href="/logout">Log out</a></li>
 			</ul>
 		</div>
 	</center>
 
 	<form id="formEdit" class="page" data-name="newpost">
-	<input type="text" id="inputTitle" name="title" placeholder="Title" required/>
-	<textarea name="content"></textarea>
+	<input type="text" id="inputTitle" name="title" placeholder="Title" value="{{ currentPost.title || '' }}" required/>
+	<textarea ui-tinymce name="content" ng-model="currentPost.content"></textarea>
 	<input type="submit" name="bntSubmit" value="Save" />
 	</form>
 
 	<div class="page" data-name="allposts">
-	<div class="postWrapper" ng-repeat="post in posts" data-name="allposts">
-	<div class="info">
-		<span><b>{{ post.title }}</b></span>
-		<img src="../img/ic_access_time_black_24px.svg"/>
-		<span>{{ post.date | date }}</span>
+		<div class="postWrapper" ng-repeat="post in posts" data-name="allposts">
+		<div class="info">
+			<span><b>{{ post.title }}</b></span>
+			<img src="../img/ic_access_time_black_24px.svg"/>
+			<span>{{ post.date | date }}</span>
+		</div>
+		<div class="buttons">
+			<img src="../img/ic_delete_black_24px.svg"/>
+			<img onclick="showPage('newpost')" ng-click="setCurrentPost(post)" src="../img/ic_edit_black_24px.svg" />
+		</div>
+		</div>
+
 	</div>
-	<div class="buttons">
-		<img src="../img/ic_access_time_black_24px.svg"/>
+
+
+	<div class="page" data-name="settings">
+		<h1>Settings</h1>
+		<form id="formSettings">
+		<img src="../img/ic_edit_black_24px.svg" ng-click="settingsBeingUpdated = !settingsBeingUpdated" ng-show="!settingsBeingUpdated" />
+		<label for="username">Username: </label>
+		<input type="text" name="username" required placeholder="Username" ng-disabled="!settingsBeingUpdated" ng-model="tempSettings.username" />
+		<label for="email">Email: </label>
+		<input type="email" name="email" required placeholder="Email" ng-disabled="!settingsBeingUpdated" ng-model="tempSettings.email" />
+		<input type="button" value="Save" ng-show="settingsBeingUpdated" />
+		<input type="button" value="Cancel" ng-click="settingsBeingUpdated = false; tempSettings = undefined" ng-show="settingsBeingUpdated" />
+		</form>
 	</div>
-	</div>
-	</div>
+
 
 </body>
 
 <script src="js/angular/angular.min.js"></script>
-<script src="js/angular/main-editor.js"></script>
 <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
 <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="bower_components/tinymce-dist/tinymce.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+
+<script src="js/angular/main-editor.js"></script>
+
 <script src="js/editor.js"></script>
 
 </html>

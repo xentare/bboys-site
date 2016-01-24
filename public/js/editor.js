@@ -1,6 +1,3 @@
-tinymce.init({
-	selector: 'textarea'
-});
 
 $.fn.parseHref = function () {
 	return this.attr('href').replace('#', '');

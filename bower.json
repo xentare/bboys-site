@@ -1,0 +1,6 @@
+{
+	"name": "bboys-site",
+	"dependencies": {
+		"angular-ui-tinymce": "latest"
+	}
+}
