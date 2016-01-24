@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-module.exports = mongoose.model('Post',{
+module.exports = mongoose.model('Post', {
 	title: {
 		type: String,
 		default: ''
@@ -21,4 +21,4 @@ module.exports = mongoose.model('Post',{
 		type: String,
 		default: ''
 	}
-})
+});
