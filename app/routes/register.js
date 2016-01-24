@@ -30,8 +30,6 @@ module.exports = function (app) {
 					next();
 				} else {
 					var md5 = hashes.random('md5'); 
-
-					console.log(params.password);  
 					var hash = bcrypt.hashSync(params.password, 10);
 
 					User.create({

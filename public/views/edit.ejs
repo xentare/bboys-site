@@ -34,6 +34,11 @@
 	<input type="submit" name="bntSubmit" value="Save"/>
 	</form>
 
+	<form id="formPostImage" class="page" data-name="newpost" method="POST" enctype="multipart/form-data" action="/api/upload">
+	<input type="file" name="userPhoto"/>
+	<input type="submit" name="btnSubmitImage" value="Upload"/>
+	</form>
+
 	<div class="page" data-name="allposts">
 		<div class="postWrapper" ng-repeat="post in posts" data-name="allposts">
 		<div class="info">

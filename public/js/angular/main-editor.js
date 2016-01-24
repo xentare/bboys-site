@@ -47,6 +47,17 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 		});
 	}
 
+	$scope.uploadImage = function (form) {
+		$http({
+			method: 'POST',
+			url: '/api/upload',
+			headers: { 'Content-Type': 'multipart/form-data' },
+			data: form
+		}).success(function (data) {
+			console.log(data);
+		});
+	}
+
 	$scope.deletePost = function (post) {
 		$http({
 			method: 'delete',
