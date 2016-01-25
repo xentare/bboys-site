@@ -15,25 +15,25 @@ module.exports = function (app) {
 			key: md5
 		}, function (err, invitation) {
 			if (err) {
-				res.send({
+				res.status(400).send({
 					err: err,
 					msg: 'Can\'t create invitation',
 					success: false
-				}, 400);
+				});
 				next();
 			} else {
 				if (invitation) {
-					res.send({
+					res.status(200).send({
 						msg: 'Invitation created',
 						data: invitation,
 						success: true
-					}, 200);
+					});
 					next();
 				} else {
-					res.send({
+					res.status(400).send({
 						msg: 'Can\'t create invitation',
 						success: false
-					}, 200);
+					});
 					next();
 				}
 			}

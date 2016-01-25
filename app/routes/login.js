@@ -6,7 +6,6 @@ module.exports = function (app) {
 
 	app.post('/api/login', function (req, res, next) {
 		var params = req.body;
-
 		if (!params.username || !params.password) {
 			res.status(400).send({
 				msg: 'All required fields were not received.',
@@ -28,7 +27,6 @@ module.exports = function (app) {
 
 				next();
 			} else {
-				
 				if (user && user.password) {
 					var match = bcrypt.compareSync(params.password, user.password);
 
@@ -42,6 +40,7 @@ module.exports = function (app) {
 
 						next();
 					} else {
+                        console.log(user);
 						res.status(400).send({
 							msg: 'Login failed',
 							success: false
@@ -49,7 +48,14 @@ module.exports = function (app) {
 
 						next();
 					}
-				}
+				} else {
+                    res.status(400).send({
+                        msg: 'Login failed',
+                        success: false
+                    });
+
+                    next();
+                }
 			}
 
 		});

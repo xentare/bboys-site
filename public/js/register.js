@@ -4,11 +4,11 @@ $('form').submit(function () {
 		url: '/api/register',
 		crossDomain: true,
 		dataType: 'json',
-		data: $(this).serialize(),
+		data: $(this).serializeArray().push($_POST['apiKey']),
 		success: function (data) {
 			console.log(data);
 			if (data && data.success) {
-				window.location.replace('/login');
+				//window.location.replace('/login');
 			}
 		}
 	});
