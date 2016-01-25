@@ -8,7 +8,7 @@ var checkLogin = require('./app/helpers/checkLogin');
 
 var Invitation = require('./app/models/invitation');
 
-app.set('port', (process.env.PORT || 8080));
+app.set('port', (process.env.PORT || 80));
 app.set('view engine', 'ejs');
 app.set('views',__dirname + '/public/views');
 
