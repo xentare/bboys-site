@@ -181,3 +181,7 @@ bold {
 	padding: 0 10px;
 	margin: 20px 0 !important;
 }
+
+input[type='file'] {
+	line-height: 10px;
+}
