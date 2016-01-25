@@ -29,16 +29,16 @@
 	<p id="notify" class="good">Notifee</p>
 
 	<form id="formEdit" class="page" data-name="newpost" ng-submit="submitForm()">
-	<input type="text" id="inputTitle" name="title" placeholder="Title" ng-model="currentPost.title" required/>
-	<textarea ui-tinymce="tinymceOptions" ng-if="tinymceOptions" name="content" ng-model="currentPost.content"></textarea>
-	<input type="submit" name="bntSubmit" value="Save"/>
+		<input type="text" id="inputTitle" name="title" placeholder="Title" ng-model="currentPost.title" required/>
+		<textarea ui-tinymce="tinymceOptions" ng-if="tinymceOptions" name="content" ng-model="currentPost.content"></textarea>
+		<input type="submit" name="bntSubmit" value="Save"/>
 	</form>
 
 	<form id="uploadForm" class="page" data-name="newpost" enctype="multipart/form-data" method="POST" action="/api/image">
-	<h1>Image upload</h1>
-	<input type="text" name="title" placeholder="Title for image" required/>
-	<input type="file" name="imagefile" id="imagefile" file-model='imagefile' />
-	<input type="submit" name="btnSubmitImage" value="Upload"/>
+		<h1>Image upload</h1>
+		<input type="text" name="title" placeholder="Title for image" required/>
+		<input type="file" name="imagefile" id="imagefile" file-model='imagefile' />
+		<input type="submit" name="btnSubmitImage" value="Upload"/>
 	</form>
 
 	<div class="page" data-name="allposts">
@@ -53,9 +53,7 @@
 			<img onclick="showPage('newpost')" ng-click="setCurrentPost(post)" src="../img/ic_edit_black_24px.svg" />
 		</div>
 		</div>
-
 	</div>
-
 
 	<div class="page" data-name="settings">
 		<h1>Settings</h1>
@@ -65,8 +63,8 @@
 		<input type="text" name="username" required placeholder="Username" ng-disabled="!settingsBeingUpdated" ng-model="tempSettings.username" />
 		<label for="email">Email: </label>
 		<input type="email" name="email" required placeholder="Email" ng-disabled="!settingsBeingUpdated" ng-model="tempSettings.email" />
-		<input type="button" value="Save" ng-show="settingsBeingUpdated" />
-		<input type="button" value="Cancel" ng-click="settingsBeingUpdated = false; tempSettings = undefined" ng-show="settingsBeingUpdated" />
+		<input type="button" value="Save" ng-show="settingsBeingUpdated" ng-click="updateSettings()"/>
+		<input type="button" value="Cancel" ng-click="settingsBeingUpdated = false; tempSettings = user" ng-show="settingsBeingUpdated" />
 		</form>
 	</div>
 
@@ -75,11 +73,11 @@
 	<h1>Invite a friend</h1>
 	<p>You may invite your friend or maybe an enemy to use this blog with you. Just press the button below to generate a link. Then send it to your partner and you will be ready to write together!</p>
 	<form>
+
 	<input type="button" class="small" ng-click="generateInvitation()" id="btnCreateInvitationKey" value="Create key" ng-show="invitationKey.key == undefined" />
 	<input type="text" id="inputInviteKey" ng-show="invitationKey.key != undefined" placeholder="Key will be here" value="http://b-boys.xyz/register?invitationKey={{ invitationKey.key }}">
 	</form>
 	</div>
-
 
 </body>
 

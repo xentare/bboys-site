@@ -20,6 +20,7 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 	$scope.updateUser = function () {
 		$http.get('/api/user/current').success(function (data) {
 			$scope.user = data.data;
+			$scope.tempSettings = data.data;
 			console.log(data);
 		});
 	}
@@ -40,7 +41,22 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 			};
 
 			$scope.$broadcast('$tinymce:refresh');
+		});
+	}
 
+	$scope.updateSettings = function () {
+		console.log($scope.tempSettings);
+		$http({
+			url: '/api/user/current',
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			data: $scope.tempSettings,
+			transformRequest: $scope.transformRequest
+		}).success(function (data) {
+			showNotification({
+				msg: data.msg,
+				good: data.success
+			});
 		});
 	}
 

@@ -12,5 +12,9 @@ module.exports = mongoose.model('User', {
 	apiKey: {
 		type: String,
 		default: ''
+	},
+	email: {
+		type: String,
+		default: ''
 	}
 });
