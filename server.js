@@ -5,27 +5,10 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var checkLogin = require('./app/helpers/checkLogin');
-var multer = require('multer');
-var filename = require('./app/helpers/filename');
-
-var storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, './public/uploads/');
-	},
-	filename: function (req, file, cb) {
-		var fname = filename.random(file.mimetype);
-		console.log(fname);
-		cb(null, fname);
-	}
-});
-
-var upload = multer({
-	storage: storage
-});
 
 var Invitation = require('./app/models/invitation');
 
-app.set('port', (process.env.PORT || 80));
+app.set('port', (process.env.PORT || 8080));
 app.set('view engine', 'ejs');
 app.set('views',__dirname + '/public/views');
 
@@ -40,23 +23,15 @@ app.use(function (req, res, next) {
 	next();
 });
 
-mongoose.connect('mongodb://localhost/bboysBlog');
+//mongoose.connect('mongodb://localhost/bboysBlog');
 
 // remote connection for developing
-//mongoose.connect('mongodb://bboy:qwe123asd@46.101.231.65/bboysBlog');
+mongoose.connect('mongodb://bboy:qwe123asd@46.101.231.65/bboysBlog');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('public'));
 
-app.post('/api/upload', upload.single('userPhoto'), function (req, res, next) {
-	res.status(200).send({
-		data: req.file,
-		msg: 'Upload succesfull',
-		success: true
-	});
-	next();
-});
  
 app.get('/', function (req, res, next) {
 	res.render('index.ejs');

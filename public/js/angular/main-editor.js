@@ -24,6 +24,26 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 		});
 	}
 
+	$scope.updateImages = function () {
+		$http.get('/api/image').success(function (data) {
+			$scope.images = [];
+			for (var i = 0; i < data.data.length; i++) {
+				$scope.images.push({
+					title: data.data[i].title || 'undefined',
+					value: data.data[i].path || 'asd'
+				});
+			}
+
+			$scope.tinymceOptions = {
+				plugins: 'image',
+				image_list: $scope.images
+			};
+
+			$scope.$broadcast('$tinymce:refresh');
+
+		});
+	}
+
 	$scope.submitForm = function () {
 		var isnew = true;
 
@@ -44,17 +64,6 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 				good: data.success
 			});
 			$scope.updatePosts();
-		});
-	}
-
-	$scope.uploadImage = function (form) {
-		$http({
-			method: 'POST',
-			url: '/api/upload',
-			headers: { 'Content-Type': 'multipart/form-data' },
-			data: form
-		}).success(function (data) {
-			console.log(data);
 		});
 	}
 
@@ -93,5 +102,7 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 
 	$scope.updatePosts();
 	$scope.updateUser();
+	$scope.updateImages();
 
 }]);
+

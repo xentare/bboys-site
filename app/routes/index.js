@@ -8,4 +8,5 @@ module.exports = function (app) {
 	require('./user')(app);
 	require('./invite')(app);
 	require('./register')(app);
+	require('./image')(app);
 }

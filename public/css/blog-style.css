@@ -152,3 +152,9 @@ a {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 150%;
 }
+
+.blogPost .postContent img {
+	max-width: 100%;
+	width: auto;
+	height: auto;
+}

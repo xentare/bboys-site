@@ -30,12 +30,14 @@
 
 	<form id="formEdit" class="page" data-name="newpost" ng-submit="submitForm()">
 	<input type="text" id="inputTitle" name="title" placeholder="Title" ng-model="currentPost.title" required/>
-	<textarea ui-tinymce name="content" ng-model="currentPost.content"></textarea>
+	<textarea ui-tinymce="tinymceOptions" ng-if="tinymceOptions" name="content" ng-model="currentPost.content"></textarea>
 	<input type="submit" name="bntSubmit" value="Save"/>
 	</form>
 
-	<form id="formPostImage" class="page" data-name="newpost" method="POST" enctype="multipart/form-data" action="/api/upload">
-	<input type="file" name="userPhoto"/>
+	<form id="uploadForm" class="page" data-name="newpost" enctype="multipart/form-data" method="POST" action="/api/image">
+	<h1>Image upload</h1>
+	<input type="text" name="title" placeholder="Title for image" required/>
+	<input type="file" name="imagefile" id="imagefile" file-model='imagefile' />
 	<input type="submit" name="btnSubmitImage" value="Upload"/>
 	</form>
 
@@ -81,14 +83,13 @@
 
 </body>
 
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script src="js/angular/angular.min.js"></script>
 <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
-<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script type="text/javascript" src="bower_components/tinymce-dist/tinymce.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui-tinymce/src/tinymce.js"></script>
-
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 <script src="js/angular/main-editor.js"></script>
-
 <script src="js/editor.js"></script>
 
 </html>
