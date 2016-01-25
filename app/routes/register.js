@@ -11,6 +11,7 @@ module.exports = function (app) {
 
     app.post('/api/register', function (req, res, next) {
         var params = req.body;
+        console.log(params);
         Invite.findOne({
             key: params.apiKey
         }, function (err, invitation) {
