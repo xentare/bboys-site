@@ -8,7 +8,7 @@ var checkLogin = require('./app/helpers/checkLogin');
 
 var Invitation = require('./app/models/invitation');
 
-app.set('port', (process.env.PORT || 8080));
+app.set('port', (process.env.PORT || 80));
 app.set('view engine', 'ejs');
 app.set('views',__dirname + '/public/views');
 
@@ -23,10 +23,10 @@ app.use(function (req, res, next) {
 	next();
 });
 
-//mongoose.connect('mongodb://localhost/bboysBlog');
+mongoose.connect('mongodb://localhost/bboysBlog');
 
 // remote connection for developing
-mongoose.connect('mongodb://bboy:qwe123asd@46.101.231.65/bboysBlog');
+//mongoose.connect('mongodb://bboy:qwe123asd@46.101.231.65/bboysBlog');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
