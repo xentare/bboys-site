@@ -9,66 +9,38 @@ module.exports = function (app) {
 			hidden: 'false'
 		}, function (err, data) {
 			if (err) {
-				res.status(400).send({
-					err: err
-				});
+				res.actionFailed();
 			} else {
-				res.status(200).send({
-					data: data
-				});
+				res.success(data);
 			}
-
-			next();
 		});
 	});
 
-	app.post('/api/post', checkToken, function (req, res, next) {
+	app.post('/api/post', checkToken, checkReqParams('title', 'content'), function (req, res, next) {
 		var params = req.body;
+
 		var post = new Post({
 			title: params.title,
 			content: params.content,
 			idUser: req.cookies.user._id
 		});
+
 		post.save(function (err) {
 			if (err) {
-				res.send({
-					err: err,
-					msg: 'Error while adding post',
-					success: false
-				}, 400);
+				res.actionFailed();
 			} else {
-				res.send({
-					msg: 'Post added succesfully',
-					success: true
-				}, 200);
+				res.success();
 			}
-
-			next();
 		});
 	});
 
-	app.put('/api/post', checkToken, function (req, res, next) {
+	app.put('/api/post', checkReqParams('_id'), checkToken, function (req, res, next) {
 		var params = req.body;
-
-		if (typeof params._id == 'undefined') {
-			res.send({
-				err: 'Post id not found',
-				msg: 'Post id not found',
-				success: false
-			}, 400);
-			next();
-		}
-
 		Post.findOne({
 			_id: params._id
 		}, function (err, post) {
 			if (err) {
-				res.send({
-					err: err,
-					msg: 'Can\'t find post to update',
-					success: false
-				}, 400);
-				next();
+				res.actionFailed();
 			}
 
 			if (post) {
@@ -77,19 +49,10 @@ module.exports = function (app) {
 					content: params.content || 'Empty content'
 				}, function (err) {
 					if (err) {
-						res.send({
-							err: err,
-							msg: 'Can\'t update',
-							success: false
-						}, 200);
-						next();
+						res.actionFailed();
 					}
 
-					res.send({
-						msg: 'Updated succesfully',
-						success: true
-					}, 200);
-					next();
+					res.success();
 				})
 			}
 		});
@@ -106,18 +69,9 @@ module.exports = function (app) {
 					hidden: true
 				}, function (err) {
 					if (err) {
-						res.send({
-							err: err,
-							msg: 'Deletion failed',
-							success: false
-						}, 400);
-						next();
+						res.actionFailed();
 					} else {
-						res.send({
-							msg: 'Deletion success',
-							success: true
-						}, 200);
-						next();
+						res.success();
 					}
 				});
 			}

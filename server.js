@@ -4,7 +4,9 @@ var mongoose = require('mongoose');
 var request = require('request');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-var checkLogin = require('./app/helpers/checkLogin');
+var err = require('./app/helpers/err');
+var success = require('./app/helpers/success');
+var cors = require('./app/helpers/cors');
 
 var Invitation = require('./app/models/invitation');
 
@@ -12,75 +14,16 @@ app.set('port', (process.env.PORT || 80));
 app.set('view engine', 'ejs');
 app.set('views',__dirname + '/public/views');
 
+app.use(err);
+app.use(success);
 app.use(cookieParser());
-
-app.use(function (req, res, next) {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-	res.setHeader('Access-Control-Allow-Credentials', true);
-
-	next();
-});
+app.use(cors);
 
 mongoose.connect('mongodb://localhost/bboysBlog');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('public')); 
-
- 
-app.get('/', function (req, res, next) {
-	res.render('index.ejs');
-	next();
-});
-
-app.get('/login', function (req, res, next) {
-	res.render('login.ejs');
-	next();
-});
-
-app.get('/register', function (req, res, next) {
-	var params = req.query;
-	Invitation.findOne({
-		key: params.invitationKey
-	}, function (err, invitation) {
-		if (err) {
-			res.render('invitation404.ejs');
-			next();
-		} else {
-			if (!invitation) {
-				res.render('invitation404.ejs');
-				next();
-			} else {
-				res.render('register.ejs');
-				next();
-			}
-		}
-	});
-
-});
-
-app.get('/logout', function (req, res, next) {
-	res.cookie('user', undefined);
-	res.redirect('/login');
-	next();
-}); 
-
-app.get('/edit', checkLogin, function (req, res, next) {
-	res.render('edit.ejs');
-	next();
-});
-
-app.get('/blog', function (req, res, next) {
-	res.render('blog.ejs');
-	next();
-});
-
-app.get('/api', function (req, res, next) {
-	res.render('api.ejs');
-	next();
-});
 
 require('./app/routes')(app);
 

@@ -9,4 +9,5 @@ module.exports = function (app) {
 	require('./invite')(app);
 	require('./register')(app);
 	require('./image')(app);
+	require('./pages')(app);
 }

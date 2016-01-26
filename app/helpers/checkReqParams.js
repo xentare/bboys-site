@@ -1,15 +1,17 @@
 module.exports = function () {
 	var args = arguments;
 	return function (req, res, next) {
+		var found = false;
 		for (var i = 0; i < args.length; i++) {
 			if (typeof req.body[args[i]] == 'undefined') {
-				res.status(400).send({
-					msg: 'Parameters missing',
-					success: false
-				});
+				res.parameterMissing();
+				found = true;
+				break;
 			}
 		}
-		next();
+		if (!found) {
+			next();
+		}
 	}
 }
 
