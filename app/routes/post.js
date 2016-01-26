@@ -1,5 +1,6 @@
 var Post = require('../models/post');
 var checkToken = require('../helpers/checkToken');
+var checkReqParams = require('../helpers/checkReqParams');
 
 module.exports = function (app) {
 

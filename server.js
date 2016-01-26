@@ -25,12 +25,9 @@ app.use(function (req, res, next) {
 
 mongoose.connect('mongodb://localhost/bboysBlog');
 
-// remote connection for developing
-//mongoose.connect('mongodb://bboy:qwe123asd@46.101.231.65/bboysBlog');
-
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static('public'));
+app.use(express.static('public')); 
 
  
 app.get('/', function (req, res, next) {
