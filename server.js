@@ -8,8 +8,6 @@ var err = require('./app/helpers/err');
 var success = require('./app/helpers/success');
 var cors = require('./app/helpers/cors');
 
-var Invitation = require('./app/models/invitation');
-
 app.set('port', (process.env.PORT || 80));
 app.set('view engine', 'ejs');
 app.set('views',__dirname + '/public/views');

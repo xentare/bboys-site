@@ -1,21 +1,18 @@
 var User = require('../models/user');
 
 module.exports = function (req, res, next) {
-	if (typeof req.cookies.user == "undefined" || req.cookies.user == "undefined") {
-		res.redirect('/login');
-		next();
+	if (typeof req.cookies.apiKey == "undefined") {
+		res.invalidAuth();
 	} else {
-		
 		User.findOne({
-			_id: req.cookies.user._id,
-			apiKey: req.cookies.user.apiKey
+			apiKey: req.cookies.apiKey
 		}, function (err, user) {
 			if (err || !user) {
-				res.redirect('/login');
+				res.invalidAuth();
+			} else {
+				req.user = user;
 				next();
 			}
 		});
-
-		next();
 	}
 }

@@ -1,64 +1,23 @@
 var hashes = require('../helpers/hashes');
 var User = require('../models/user');
 var bcrypt = require('bcrypt');
+var checkReqParams = require('../helpers/checkReqParams');
 
 module.exports = function (app) {
 
-	app.post('/api/login', function (req, res, next) {
+	app.post('/api/login', checkReqParams('username', 'password'), function (req, res, next) {
 		var params = req.body;
-		if (!params.username || !params.password) {
-			res.status(400).send({
-				msg: 'All required fields were not received.',
-				success: false
-			});
-			next();
-		}
 
 		User.findOne({
 			username: params.username
-		}, function (error, user) {
-
-			if (error) {
-				res.status(400).send({
-					err: error,
-					msg: 'Username or password incorrect.',
-					success: false
-				});
-
-				next();
+		}).then(function (doc) {
+			if (doc) {
+				res.success(doc);
 			} else {
-				if (user && user.password) {
-					var match = bcrypt.compareSync(params.password, user.password);
-
-					if (match) {
-						res.cookie('user', user, { maxAge: 900000 });
-						res.status(200).send({
-							data: user,
-							msg: 'Login succesfull',
-							success: true
-						});
-
-						next();
-					} else {
-                        console.log(user);
-						res.status(400).send({
-							msg: 'Login failed',
-							success: false
-						});
-
-						next();
-					}
-				} else {
-                    res.status(400).send({
-                        msg: 'Login failed',
-                        success: false
-                    });
-
-                    next();
-                }
+				res.actionFailed();
 			}
-
+		}, function (err) {
+			res.badRequest();
 		});
-
 	});
 }

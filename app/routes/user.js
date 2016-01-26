@@ -21,7 +21,7 @@ module.exports = function (app) {
 
 	app.get('/api/user/current', checkToken, function (req, res, next) {
 		User.findOne({
-			_id: req.cookies.user._id
+			_id: req.user._id
 		}, function (err, user) {
 			if (err) {
 				res.send({
@@ -55,7 +55,7 @@ module.exports = function (app) {
 		console.log(req.body);
 
 		User.findOne({
-			_id: req.cookies.user._id
+			_id: req.user._id
 		}, function (err, user) {
 			if (err) {
 				res.status(400).send({

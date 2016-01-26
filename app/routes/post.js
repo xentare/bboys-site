@@ -7,75 +7,69 @@ module.exports = function (app) {
 	app.get('/api/post/all', function (req, res, next) {
 		Post.find({
 			hidden: 'false'
-		}, function (err, data) {
-			if (err) {
-				res.actionFailed();
-			} else {
-				res.success(data);
-			}
+		}).then(function (doc) {
+			res.success(doc);
+		}, function (err) {
+			res.badRequest();
 		});
 	});
 
 	app.post('/api/post', checkToken, checkReqParams('title', 'content'), function (req, res, next) {
 		var params = req.body;
 
-		var post = new Post({
+		Post.create({
 			title: params.title,
 			content: params.content,
-			idUser: req.cookies.user._id
-		});
-
-		post.save(function (err) {
-			if (err) {
-				res.actionFailed();
-			} else {
-				res.success();
-			}
+			idUser: req.user._id
+		}).then(function (doc) {
+			res.success(doc);
+		}, function (err) {
+			res.actionFailed();
 		});
 	});
 
-	app.put('/api/post', checkReqParams('_id'), checkToken, function (req, res, next) {
+	app.put('/api/post', checkToken, checkReqParams('_id'), function (req, res, next) {
 		var params = req.body;
+
 		Post.findOne({
 			_id: params._id
-		}, function (err, post) {
-			if (err) {
-				res.actionFailed();
-			}
-
-			if (post) {
-				post.update({
-					title: params.title || 'Untitled',
-					content: params.content || 'Empty content'
-				}, function (err) {
-					if (err) {
-						res.actionFailed();
-					}
-
-					res.success();
-				})
-			}
-		});
-	});
-
-	app.delete('/api/post', checkToken, function (req, res, next) {
-		var params = req.body;
-		console.log(params);
-		Post.findOne({
-			_id: params._id
-		}, function (err, post) {
-			if (post) {
-				post.update({
-					hidden: true
-				}, function (err) {
-					if (err) {
-						res.actionFailed();
+		}).then(function (doc) {
+			if (doc) {
+				doc.update({
+					title: params.title,
+					content: params.content
+				}).then(function (doc) {
+					if (doc) {
+						res.success(doc);
 					} else {
-						res.success();
+						res.actionFailed();
 					}
 				});
+			} else {
+				res.notFoundErr();
 			}
-		})
+		});
+	});
 
+	app.delete('/api/post', checkToken, checkReqParams('_id'), function (req, res, next) {
+		var params = req.body;
+
+		Post.findOne({
+			_id: params._id
+		}).then(function (doc) {
+			if (doc) {
+				doc.update({
+					hidden: true
+				}).then(function (doc) {
+					if (doc) {
+						res.success(doc);
+					} else {
+						res.actionFailed();
+					}
+				});
+			} else {
+				res.notFoundErr();
+			}
+		});
 	});
 }

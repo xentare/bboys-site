@@ -27,5 +27,13 @@ module.exports = function (req, res, next) {
 			success: false
 		});
 	}
+
+	res.invalidAuth = function () {
+		res.status(401).send({
+			msg: 'Invalid authorization',
+			success: false
+		});
+	}
+
 	return next();
 }
