@@ -1,6 +1,5 @@
-var checkLogin = require('../helpers/checkLogin');
+var checkToken = require('../helpers/checkToken');
 var Invitation = require('../models/invitation');
-
 
 module.exports = function (app) {
 
@@ -15,19 +14,17 @@ module.exports = function (app) {
 	app.get('/register', function (req, res, next) {
 		var params = req.query;
 		Invitation.findOne({
+			valid: true,
 			key: params.invitationKey
-		}, function (err, invitation) {
-			if (err) {
-				res.render('invitation404.ejs');
+		}).then(function (doc) {
+			if (doc) {
+				res.render('register.ejs');
 			} else {
-				if (!invitation) {
-					res.render('invitation404.ejs');
-				} else {
-					res.render('register.ejs');
-				}
+				res.render('invitation404.ejs');
 			}
+		}, function (err) {
+			res.render('invitation404.ejs');
 		});
-
 	});
 
 	app.get('/logout', function (req, res, next) {
@@ -35,7 +32,7 @@ module.exports = function (app) {
 		res.redirect('/login');
 	}); 
 
-	app.get('/edit', checkLogin, function (req, res, next) {
+	app.get('/edit', checkToken, function (req, res, next) {
 		res.render('edit.ejs');
 	});
 
