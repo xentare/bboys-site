@@ -80,6 +80,12 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 				good: data.success
 			});
 			$scope.updatePosts();
+
+            $http.post('/api/slack/blog',{
+				data: $scope.currentPost,
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				transformRequest: $scope.transformRequest
+            });
 		});
 	}
 
