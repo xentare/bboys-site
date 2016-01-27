@@ -1,6 +1,6 @@
 var request = require('request');
-var checkReqParams = require('helpers/checkReqParams');
-var checkToken = require('helpers/checkToken');
+var checkReqParams = require('../helpers/checkReqParams');
+var checkToken = require('../helpers/checkToken');
 
 module.exports = function (app) {
 
@@ -26,10 +26,11 @@ module.exports = function (app) {
 		}, 200);
 	});
 
-	app.post('/api/slack/blog', checkToken, function (req, res, params){
+	app.post('/api/slack/blog', checkToken, function (req, res, next){
 		var webhook =  'https://hooks.slack.com/services/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';
         var params = req.body;
-        var text = req.user.username + 'posted a blog post with a title ' + params.title;
+		console.log(params);
+        var text = req.user.username + ' posted a blog post with a title ' + params.title;
 
 		request({
 			url: webhook,
