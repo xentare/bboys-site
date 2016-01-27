@@ -9,10 +9,6 @@ app.controller('mainController', ['$scope', '$sce', '$http',  function ($scope, 
 		for (var i = 0; i < $scope.posts.length; i++) {
 			$scope.posts[i].content = $sce.trustAsHtml($scope.posts[i].content);
 		}
-
-		$http.get('/api/user/public').success(function (data) {
-			$scope.users = data.data;
-		});
 	});
 
 }]);
