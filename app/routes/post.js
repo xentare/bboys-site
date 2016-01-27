@@ -8,7 +8,7 @@ module.exports = function (app) {
 	app.get('/api/post/all', function (req, res, next) {
 		Post.find({
 			hidden: 'false'
-		}, 'title idUser content').then(function (doc) {
+		}, 'title idUser content date').then(function (doc) {
 			User.find({}, 'username _id').then(function (users) {
 
 				for (var i = 0; i < doc.length; i++) {
