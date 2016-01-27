@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = function (app) {
-
 	require('./slack')(app);
 	require('./login')(app);
 	require('./post')(app);
@@ -9,4 +8,5 @@ module.exports = function (app) {
 	require('./invite')(app);
 	require('./register')(app);
 	require('./image')(app);
+	require('./pages')(app);
 }

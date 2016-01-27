@@ -1,126 +1,75 @@
 var Post = require('../models/post');
 var checkToken = require('../helpers/checkToken');
+var checkReqParams = require('../helpers/checkReqParams');
 
 module.exports = function (app) {
 
 	app.get('/api/post/all', function (req, res, next) {
 		Post.find({
 			hidden: 'false'
-		}, function (err, data) {
-			if (err) {
-				res.status(400).send({
-					err: err
-				});
-			} else {
-				res.status(200).send({
-					data: data
-				});
-			}
-
-			next();
+		}).then(function (doc) {
+			res.success(doc);
+		}, function (err) {
+			res.badRequest();
 		});
 	});
 
-	app.post('/api/post', checkToken, function (req, res, next) {
+	app.post('/api/post', checkToken, checkReqParams('title', 'content'), function (req, res, next) {
 		var params = req.body;
-		var post = new Post({
+
+		Post.create({
 			title: params.title,
 			content: params.content,
-			idUser: req.cookies.user._id
-		});
-		post.save(function (err) {
-			if (err) {
-				res.send({
-					err: err,
-					msg: 'Error while adding post',
-					success: false
-				}, 400);
-			} else {
-				res.send({
-					msg: 'Post added succesfully',
-					success: true
-				}, 200);
-			}
-
-			next();
+			idUser: req.user._id
+		}).then(function (doc) {
+			res.success(doc);
+		}, function (err) {
+			res.actionFailed();
 		});
 	});
 
-	app.put('/api/post', checkToken, function (req, res, next) {
+	app.put('/api/post', checkToken, checkReqParams('_id'), function (req, res, next) {
 		var params = req.body;
-
-		if (typeof params._id == 'undefined') {
-			res.send({
-				err: 'Post id not found',
-				msg: 'Post id not found',
-				success: false
-			}, 400);
-			next();
-		}
 
 		Post.findOne({
 			_id: params._id
-		}, function (err, post) {
-			if (err) {
-				res.send({
-					err: err,
-					msg: 'Can\'t find post to update',
-					success: false
-				}, 400);
-				next();
-			}
-
-			if (post) {
-				post.update({
-					title: params.title || 'Untitled',
-					content: params.content || 'Empty content'
-				}, function (err) {
-					if (err) {
-						res.send({
-							err: err,
-							msg: 'Can\'t update',
-							success: false
-						}, 200);
-						next();
-					}
-
-					res.send({
-						msg: 'Updated succesfully',
-						success: true
-					}, 200);
-					next();
-				})
-			}
-		});
-	});
-
-	app.delete('/api/post', checkToken, function (req, res, next) {
-		var params = req.body;
-		console.log(params);
-		Post.findOne({
-			_id: params._id
-		}, function (err, post) {
-			if (post) {
-				post.update({
-					hidden: true
-				}, function (err) {
-					if (err) {
-						res.send({
-							err: err,
-							msg: 'Deletion failed',
-							success: false
-						}, 400);
-						next();
+		}).then(function (doc) {
+			if (doc) {
+				doc.update({
+					title: params.title,
+					content: params.content
+				}).then(function (doc) {
+					if (doc) {
+						res.success(doc);
 					} else {
-						res.send({
-							msg: 'Deletion success',
-							success: true
-						}, 200);
-						next();
+						res.actionFailed();
 					}
 				});
+			} else {
+				res.notFoundErr();
 			}
-		})
+		});
+	});
 
+	app.delete('/api/post', checkToken, checkReqParams('_id'), function (req, res, next) {
+		var params = req.body;
+
+		Post.findOne({
+			_id: params._id
+		}).then(function (doc) {
+			if (doc) {
+				doc.update({
+					hidden: true
+				}).then(function (doc) {
+					if (doc) {
+						res.success(doc);
+					} else {
+						res.actionFailed();
+					}
+				});
+			} else {
+				res.notFoundErr();
+			}
+		});
 	});
 }
