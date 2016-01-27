@@ -12,32 +12,12 @@ module.exports = function (app) {
 		var md5 = hashes.random('md5');
 
 		Invitation.create({
-			key: md5
-		}, function (err, invitation) {
-			if (err) {
-				res.status(400).send({
-					err: err,
-					msg: 'Can\'t create invitation',
-					success: false
-				});
-				next();
-			} else {
-				if (invitation) {
-					res.status(200).send({
-						msg: 'Invitation created',
-						data: invitation,
-						success: true
-					});
-					next();
-				} else {
-					res.status(400).send({
-						msg: 'Can\'t create invitation',
-						success: false
-					});
-					next();
-				}
-			}
+			key: md5,
+			valid: true
+		}).then(function (doc) {
+			res.success(doc);
+		}, function (err) {
+			res.success(err);
 		});
-
 	});
 }

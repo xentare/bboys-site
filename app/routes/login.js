@@ -12,7 +12,13 @@ module.exports = function (app) {
 			username: params.username
 		}).then(function (doc) {
 			if (doc) {
-				res.success(doc);
+				var match = bcrypt.compareSync(params.password, doc.password);
+				if (match) {
+					res.cookie('apiKey', doc.apiKey, { maxAge: 900000 });
+					res.success();
+				} else {
+					res.invalidAuth();
+				}
 			} else {
 				res.actionFailed();
 			}

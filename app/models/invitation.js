@@ -8,5 +8,9 @@ module.exports = mongoose.model('Invite', {
 	key: {
 		type: String,
 		default: ''
+	},
+	valid: {
+		type: Boolean,
+		default: true
 	}
 });

@@ -1,6 +1,8 @@
 var Image = require('../models/image');
 var multer = require('multer');
 var filename = require('../helpers/filename');
+var checkReqParams = require('../helpers/checkReqParams');
+var checkFile = require('../helpers/checkFile');
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -22,63 +24,30 @@ module.exports = function (app) {
 	app.get('/api/image', function (req, res, next) {
 		var params = req.body;
 
-		Image.find({}, function (err, images) {
-			if (err) {
-				res.status(400).send({
-					err: err,
-					msg: 'Can\'t query images',
-					success: false
-				});
-				next();
+		Image.find({}).then(function (doc) {
+			if (doc) {
+				res.success(doc);
 			} else {
-				if (images) {
-					res.status(200).send({
-						msg: 'Images queried',
-						data: images,
-						success: true
-					});
-					next();
-				} else {
-					res.status(200).send({
-						msg: 'Can\'t query images',
-						success: false
-					});
-					next();
-				}
+				res.actionFailed();
 			}
+		}, function (err) {
+			res.badRequest();
 		});
 	});
 
-	app.post('/api/image', upload.single('imagefile'), function (req, res, next) {
-		if (!req.body.title || !req.file) {
-			res.status(400).send({
-				msg: 'Title or file not found',
-				success: false
-			});
-			next();
-		} else {
-			console.log(req.file);
-			Image.create({
-				title: req.body.title,
-				filename: req.file.filename,
-				path: req.file.path.replace('public/', '')
-			}, function (err, image) {
-				if (err) {
-					res.status(400).send({
-						msg: 'Upload failed',
-						success: false
-					});
-					next();
-				} else {	
-					res.status(200).send({
-						data: req.file,
-						msg: 'Upload succesfull',
-						success: true
-					});
-					next();
-				}
-			});
-		}
-
+	app.post('/api/image', upload.single('imagefile'), checkFile, checkReqParams('title'), function (req, res, next) {
+		Image.create({
+			title: req.body.title,
+			filename: req.file.filename,
+			path: req.file.path.replace('public/', '')
+		}).then(function (doc) {
+			if (doc) {
+				res.success(doc);
+			} else {
+				res.actionFailed();
+			}
+		}, function (err) {
+			res.badRequest();
+		});
 	});
 }

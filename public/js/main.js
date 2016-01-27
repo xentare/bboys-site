@@ -12,19 +12,6 @@ app.controller('mainController', ['$scope', '$sce', '$http',  function ($scope, 
 
 		$http.get('/api/user/public').success(function (data) {
 			$scope.users = data.data;
-
-			if (!$scope.users) {
-				return;
-			}
-
-			for (var i = 0; i < $scope.posts.length; i++) {
-				for (var j = 0; j < $scope.users.length; j++) {
-					if ($scope.posts[i].idUser == $scope.users[j]._id) {
-						$scope.posts[i].writtenBy = $scope.users[j].username;
-						break;
-					}
-				}
-			}
 		});
 	});
 

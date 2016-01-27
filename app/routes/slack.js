@@ -30,8 +30,6 @@ module.exports = function (app) {
 		res.json({
 			msg: 'Comment sent successfully.'
 		}, 200);
-
-		next();
 	});
 
 }

@@ -1,4 +1,5 @@
 var Post = require('../models/post');
+var User = require('../models/user');
 var checkToken = require('../helpers/checkToken');
 var checkReqParams = require('../helpers/checkReqParams');
 
@@ -7,14 +8,31 @@ module.exports = function (app) {
 	app.get('/api/post/all', function (req, res, next) {
 		Post.find({
 			hidden: 'false'
-		}).then(function (doc) {
-			res.success(doc);
+		}, 'title idUser content').then(function (doc) {
+			User.find({}, 'username _id').then(function (users) {
+
+				for (var i = 0; i < doc.length; i++) {
+					// conver Mongoose Document Object to plain JS object
+					doc[i] = doc[i].toObject();
+
+					for (var j = 0; j < users.length; j++) {
+						if (doc[i].idUser == users[j]._id) {
+							doc[i].username = users[j].username;
+							delete doc[i].idUser;
+							break;
+						}
+					}
+				}
+
+				res.success(doc);
+			});
+
 		}, function (err) {
 			res.badRequest();
 		});
 	});
 
-	app.post('/api/post', checkToken, checkReqParams('title', 'content'), function (req, res, next) {
+	app.post('/api/post', checkToken, function (req, res, next) {
 		var params = req.body;
 
 		Post.create({

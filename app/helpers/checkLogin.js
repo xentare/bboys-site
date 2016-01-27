@@ -1,6 +1,7 @@
 
 module.exports = function (req, res, next) {
-	if (typeof req.cookies.apiKey == "undefined") {
+	console.log(typeof req.cookies.apiKey);
+	if (req.cookies.apiKey == 'undefined' || typeof req.cookies.apiKey == 'undefined') {
 		res.invalidAuth();
 	} else {
 		next();
