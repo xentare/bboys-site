@@ -12,7 +12,7 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 
 	$scope.updatePosts = function () {
 		$http.get('/api/post/all').success(function (data) {
-			console.log(data);
+			//console.log(data);
 			$scope.posts = data.data;
 		});
 	}
@@ -45,7 +45,7 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 	}
 
 	$scope.updateSettings = function () {
-		console.log($scope.tempSettings);
+		//console.log($scope.tempSettings);
 		$http({
 			url: '/api/user/current',
 			method: 'POST',
@@ -80,6 +80,14 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 				good: data.success
 			});
 			$scope.updatePosts();
+		});
+		console.log($scope.currentPost);
+		$http({
+			url: '/api/slack/blog',
+			method: 'POST',
+			data: $scope.currentPost,
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			transformRequest: $scope.transformRequest
 		});
 	}
 
