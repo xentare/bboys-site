@@ -16,5 +16,9 @@ module.exports = mongoose.model('User', {
 	email: {
 		type: String,
 		default: ''
+	},
+	avatar: {
+		type: String,
+		default: ''
 	}
 });

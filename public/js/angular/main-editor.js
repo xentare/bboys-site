@@ -35,6 +35,8 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 				});
 			}
 
+			console.log($scope.images);
+
 			$scope.tinymceOptions = {
 				plugins: 'image',
 				image_list: $scope.images
@@ -81,7 +83,7 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 			});
 			$scope.updatePosts();
 		});
-		console.log($scope.currentPost);
+
 		$http({
 			url: '/api/slack/blog',
 			method: 'POST',
@@ -122,6 +124,24 @@ app.controller('mainController', ['$scope', '$http',  function ($scope, $http) {
 			str.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]));
 		}
 		return str.join('&');
+	}
+
+	$scope.updateAvatar = function () {
+
+		$http({
+			method: 'POST',
+			url: '/api/user/avatar',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			data: {
+				avatar: $scope.user.avatar
+			},
+			transformRequest: $scope.transformRequest
+		}).success(function (data) {
+			showNotification({
+				msg: data.msg,
+				good: data.success
+			});
+		});
 	}
 
 	$scope.updatePosts();

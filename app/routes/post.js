@@ -9,7 +9,7 @@ module.exports = function (app) {
 		Post.find({
 			hidden: 'false'
 		}, 'title idUser content date').then(function (doc) {
-			User.find({}, 'username _id').then(function (users) {
+			User.find({}, 'username _id avatar').then(function (users) {
 
 				for (var i = 0; i < doc.length; i++) {
 					// conver Mongoose Document Object to plain JS object
@@ -17,7 +17,7 @@ module.exports = function (app) {
 
 					for (var j = 0; j < users.length; j++) {
 						if (doc[i].idUser == users[j]._id) {
-							doc[i].username = users[j].username;
+							doc[i].user = users[j];
 							delete doc[i].idUser;
 							break;
 						}

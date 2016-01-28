@@ -42,11 +42,10 @@
 		<div class="blogPost">
 			<h1>{{ post.title }}</h1>
 			<div class="info">
-				<div class="avatar">
-				<!-- image for the developer -->
+				<div class="avatar" style="background: url('{{ post.user.avatar }}')">
 				</div>
 
-				<span>{{ post.username || 'undefined' }} wrote</span>
+				<span>{{ post.user.username || 'undefined' }} wrote</span>
 
 				<img src="../img/ic_access_time_black_24px.svg"/>
 				<span>{{ post.date | date}}</span>

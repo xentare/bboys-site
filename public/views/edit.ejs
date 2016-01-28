@@ -58,20 +58,33 @@
 	<div class="page" data-name="settings">
 		<h1>Settings</h1>
 		<form id="formSettings">
-		<img src="../img/ic_edit_black_24px.svg" ng-click="settingsBeingUpdated = !settingsBeingUpdated" ng-show="!settingsBeingUpdated" />
-		<label for="username">Username: </label>
-		<input type="text" name="username" required placeholder="Username" ng-disabled="!settingsBeingUpdated" ng-model="tempSettings.username" />
-		<label for="email">Email: </label>
-		<input type="email" name="email" required placeholder="Email" ng-disabled="!settingsBeingUpdated" ng-model="tempSettings.email" />
-		<input type="button" value="Save" ng-show="settingsBeingUpdated" ng-click="updateSettings()"/>
-		<input type="button" value="Cancel" ng-click="settingsBeingUpdated = false; tempSettings = user" ng-show="settingsBeingUpdated" />
+			<img src="../img/ic_edit_black_24px.svg" ng-click="settingsBeingUpdated = !settingsBeingUpdated" ng-show="!settingsBeingUpdated" />
+			<label for="username">Username: </label>
+			<input type="text" name="username" required placeholder="Username" ng-disabled="!settingsBeingUpdated" ng-model="tempSettings.username" />
+			<label for="email">Email: </label>
+			<input type="email" name="email" required placeholder="Email" ng-disabled="!settingsBeingUpdated" ng-model="tempSettings.email" />
+			<input type="button" value="Save" ng-show="settingsBeingUpdated" ng-click="updateSettings()"/>
+			<input type="button" value="Cancel" ng-click="settingsBeingUpdated = false; tempSettings = user" ng-show="settingsBeingUpdated" />
+		</form>
+
+		<h2>Change profile image</h2>
+		<div ng-show="user.avatar">
+			<img id="avatar" src="{{ user.avatar }}" />
+		</div>
+
+		<p ng-show="!user.avatar">Profile image not set</p>
+
+		<form name="avatarForm" id="avatarForm">
+			<select name="selectAvatar" ng-model="user.avatar">
+				<option ng-repeat="image in images" value="{{ image.value }}">{{ image.title }}</option>
+			</select>
+			<button ng-click="updateAvatar();">Change</button>
 		</form>
 	</div>
 
 	<div class="page" data-name="invite">
-
-	<h1>Invite a friend</h1>
-	<p>You may invite your friend or maybe an enemy to use this blog with you. Just press the button below to generate a link. Then send it to your partner and you will be ready to write together!</p>
+		<h1>Invite a friend</h1>
+		<p>You may invite your friend or maybe an enemy to use this blog with you. Just press the button below to generate a link. Then send it to your partner and you will be ready to write together!</p>
 	<form>
 
 	<input type="button" class="small" ng-click="generateInvitation()" id="btnCreateInvitationKey" value="Create key" ng-show="invitationKey.key == undefined" />

@@ -185,3 +185,7 @@ bold {
 input[type='file'] {
 	line-height: 10px;
 }
+
+#avatar {
+	max-width: 400px;
+}

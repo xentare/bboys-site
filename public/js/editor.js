@@ -37,11 +37,11 @@ function showNotification (opts) {
 
 $('#uploadForm').submit(function() {
 	$(this).ajaxSubmit({
-		error: function(xhr) {
+		error: function (xhr) {
 			console.log(xhr);
 		},
 
-		success: function(response) {
+		success: function (response) {
 
 			// call angular function to update images in tinymce
 			var scope = angular.element('#mainController').scope();

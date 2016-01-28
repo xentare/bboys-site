@@ -146,6 +146,9 @@ a {
 	border-radius: 20px;
 	background-color: orange;
 	margin-right: 5px;
+	overflow: hidden;
+	background-position: center !important;
+	background-size: cover !important;
 }
 
 .blogPost .postContent {
